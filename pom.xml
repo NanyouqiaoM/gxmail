@@ -15,6 +15,9 @@
         <module>gxmail-order</module>
         <module>gxmail-product</module>
         <module>gxmail-warehouse</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>gxmail-common</module>
     </modules>
 
 </project>
