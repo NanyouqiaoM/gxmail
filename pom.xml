@@ -18,7 +18,7 @@
         <module>renren-fast</module>
         <module>renren-generator</module>
         <module>gxmail-common</module>
-        <module>gxmail-geteway</module>
+        <module>gxmail-gateway</module>
     </modules>
 
 </project>
