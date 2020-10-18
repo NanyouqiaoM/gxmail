@@ -27,5 +27,7 @@ spring:
             - Path=/api/**
           filters:
             - RewritePath=/api/(?<segment>/?.*),/renren-fast/$\{segment}
+  messages:
+    encoding: UTF-8
 server:
   port: 8090
