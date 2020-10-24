@@ -1,20 +1,22 @@
 package com.gx.gxmail.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.gx.gxmail.product.entity.AttrEntity;
+import com.gx.gxmail.product.service.AttrService;
 import com.gx.gxmail.product.service.CategoryService;
+import com.gx.gxmail.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.gx.gxmail.product.entity.AttrGroupEntity;
 import com.gx.gxmail.product.service.AttrGroupService;
 import com.gx.common.utils.PageUtils;
 import com.gx.common.utils.R;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -31,6 +33,16 @@ public class AttrGroupController {
     private AttrGroupService attrGroupService;
     @Autowired
     private CategoryService categoryService;
+    @Resource
+    AttrService attrService;
+
+    ///product/attrgroup/{attrgroupId}/attr/relation
+    @GetMapping("/{attrgroupId}/attr/relation")
+    public R attrRelation(@PathVariable("attrgroupId") Long attrgroupId) {
+        List<AttrEntity> entities = attrService.getRelationAttr(attrgroupId);
+        return R.ok().put("data", entities);
+    }
+
 
     /**
      * 列表
@@ -64,6 +76,12 @@ public class AttrGroupController {
     public R save(@RequestBody AttrGroupEntity attrGroup) {
         attrGroupService.save(attrGroup);
 
+        return R.ok();
+    }
+
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelation(@RequestBody AttrGroupRelationVo[] vos) {
+        attrService.deleteRelation(vos);
         return R.ok();
     }
 
