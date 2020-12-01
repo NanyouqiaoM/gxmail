@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.gx.gxmail.product.entity.AttrEntity;
+import com.gx.gxmail.product.service.AttrAttrgroupRelationService;
 import com.gx.gxmail.product.service.AttrService;
 import com.gx.gxmail.product.service.CategoryService;
 import com.gx.gxmail.product.vo.AttrGroupRelationVo;
+import com.gx.gxmail.product.vo.AttrGroupWithAttrsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +37,16 @@ public class AttrGroupController {
     private CategoryService categoryService;
     @Resource
     AttrService attrService;
+    @Autowired
+    AttrAttrgroupRelationService relationService;
+
+    ///product/attrgroup/attr/relation
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo> vos) {
+
+        relationService.saveBatch(vos);
+        return R.ok();
+    }
 
     ///product/attrgroup/{attrgroupId}/attr/relation
     @GetMapping("/{attrgroupId}/attr/relation")
@@ -42,7 +54,23 @@ public class AttrGroupController {
         List<AttrEntity> entities = attrService.getRelationAttr(attrgroupId);
         return R.ok().put("data", entities);
     }
+    ///product/attrgroup/{catelogId}/withattr
+    @GetMapping("/{catelogId}/withattr")
+    public R getAttrGroupWithAttrs(@PathVariable("catelogId")Long catelogId){
 
+        //1、查出当前分类下的所有属性分组，
+        //2、查出每个属性分组的所有属性
+        List<AttrGroupWithAttrsVo> vos =  attrGroupService.getAttrGroupWithAttrsByCatelogId(catelogId);
+        return R.ok().put("data",vos);
+    }
+
+    ///product/attrgroup/{attrgroupId}/noattr/relation
+    @GetMapping("/{attrgroupId}/noattr/relation")
+    public R attrNoRelation(@PathVariable("attrgroupId") Long attrgroupId,
+                            @RequestParam Map<String, Object> params) {
+        PageUtils page = attrService.getNoRelationAttr(params, attrgroupId);
+        return R.ok().put("page", page);
+    }
 
     /**
      * 列表
@@ -65,7 +93,7 @@ public class AttrGroupController {
         AttrGroupEntity attrGroup = attrGroupService.getById(attrGroupId);
         attrGroup.setCatelogPath(categoryService.findCatelogPath(attrGroup.getCatelogId()));
 
-        return R.ok().put("attrGroup", attrGroup);
+        return R.ok().put("a ttrGroup", attrGroup);
     }
 
     /**
