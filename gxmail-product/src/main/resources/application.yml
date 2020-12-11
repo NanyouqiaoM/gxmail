@@ -9,6 +9,8 @@ spring:
     password: root
   messages:
     encoding: utf-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
